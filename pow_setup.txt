@@ -1,0 +1,54 @@
+setup pow for blognew
+
+
+mix deps.get
+mix pow.install
+
+First, append this to `config/config.ex`:
+
+config :blognew, :pow,
+  user: Blognew.Users.User,
+  repo: Blognew.Repo
+
+Next, add `Pow.Plug.Session` plug to `lib/blognew_web/endpoint.ex`:
+
+defmodule BlognewWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :blognew
+
+  # ...
+
+  plug Plug.Session,
+    store: :cookie,
+    key: "_blognew_key",
+    signing_salt: "secret"
+
+  plug Pow.Plug.Session, otp_app: :blognew
+
+  # ...
+end
+
+Last, update` lib/blognew_web/router.ex` with the Pow routes:
+
+defmodule BlognewWeb.Router do
+  use BlognewWeb, :router
+  use Pow.Phoenix.Router
+
+  # ... pipelines
+
+  scope "/" do
+    pipe_through :browser
+
+    pow_routes()
+  end
+
+  # ... routes
+end
+
+Modify templates
+
+mix pow.phoenix.gen.templates
+
+
+Error faced:
+Pow configuration not found in connection. Please use a Pow plug that puts the Pow configuration in the plug connection.
+(when add pow route protected pipeline)
