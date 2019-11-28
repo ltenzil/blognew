@@ -1,5 +1,7 @@
 # Blognew
 Deployed here https://blogphx.herokuapp.com/
+Authentication done with Pow
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
